@@ -156,7 +156,7 @@
 
         // Function to load sports data based on selected sport
         function loadSports() {
-            $.get(`http://localhost:8000/sports`, function (data) {
+            $.get(`http://gotto.io:8000/sports`, function (data) {
                 let sportsHtml = '';
                 data.forEach(game => {
                     sportsHtml += `
@@ -188,7 +188,7 @@
 
         // Function to load news data
         function loadNews(q) {
-            $.get('http://localhost:8000/news?q=' + q, function (data) {
+            $.get('http://gotto.io:8000/news?q=' + q, function (data) {
                 let newsHtml = '';
                 data.articles.forEach(article => {
                     newsHtml += `
@@ -209,7 +209,7 @@
             // Show loading spinner
             $('#reddit-loading').removeClass('hidden');
 
-            $.get('http://localhost:8000/reddit', function (data) {
+            $.get('http://gotto.io:8000/reddit', function (data) {
                 let redditHtml = '';
                 const posts = data[subreddit];
                 posts.forEach(post => {
@@ -240,7 +240,7 @@
         // Function to load reddit tabs (subreddit names)
         function loadRedditTabs() {
             $('#reddit-loading').removeClass('hidden');
-            $.get('http://localhost:8000/reddit', function (data) {
+            $.get('http://gotto.io:8000/reddit', function (data) {
                 let redditTabsHtml = '';
                 for (const subreddit in data) {
                     redditTabsHtml += `
