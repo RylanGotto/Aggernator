@@ -18,8 +18,13 @@ func GameScoreHandler(c echo.Context) error {
 }
 
 func NewsHandler(c echo.Context) error {
+	q := "Election 2024"
+	if c.QueryParam("q") != "undefined" {
+		q = c.QueryParam("q")
+	}
+
 	n := NewsParams{
-		Q: "Election 2024",
+		Q: q,
 	}
 	news, err := n.GetTopHeadlines()
 	if err != nil {

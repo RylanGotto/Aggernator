@@ -87,7 +87,11 @@
         <div class="mb-8">
             <!-- News Header with Refresh Button -->
             <div class="flex items-center justify-between mb-4">
-                <h2 class="text-xl font-bold">News</h2>
+                <div>
+                    <h2 class="text-xl font-bold">News</h2>
+                    <input id="search-news" type="text" />
+                </div>
+
                 <button id="refresh-news" class="text-blue-500">
                     <svg class="w-6 h-6 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg">
@@ -139,6 +143,7 @@
 
     <!-- JavaScript Section -->
     <script>
+        
         // Global variables to keep track of selected sport and subreddit
         let selectedSport = 'ncaa';
         let selectedSubreddit = 'announcements';
@@ -151,7 +156,7 @@
 
         // Function to load sports data based on selected sport
         function loadSports() {
-            $.get(`http://gotto.io:8000/sports`, function (data) {
+            $.get(`http://localhost:8000/sports`, function (data) {
                 let sportsHtml = '';
                 data.forEach(game => {
                     sportsHtml += `
@@ -182,8 +187,8 @@
         }
 
         // Function to load news data
-        function loadNews() {
-            $.get('http://gotto.io:8000/news', function (data) {
+        function loadNews(q) {
+            $.get('http://localhost:8000/news?q=' + q, function (data) {
                 let newsHtml = '';
                 data.articles.forEach(article => {
                     newsHtml += `
@@ -204,7 +209,7 @@
             // Show loading spinner
             $('#reddit-loading').removeClass('hidden');
 
-            $.get('http://gotto.io:8000/reddit', function (data) {
+            $.get('http://localhost:8000/reddit', function (data) {
                 let redditHtml = '';
                 const posts = data[subreddit];
                 posts.forEach(post => {
@@ -223,6 +228,10 @@
                 // Hide loading spinner
                 $('#reddit-loading').addClass('hidden');
 
+                redditHtml += `<div id="reddit-loading" class="hidden absolute inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
+                    <div class="spinner"></div>
+                </div>`;
+
                 // Update reddit content
                 $('#reddit-section').html(redditHtml);
             });
@@ -230,7 +239,8 @@
 
         // Function to load reddit tabs (subreddit names)
         function loadRedditTabs() {
-            $.get('http://gotto.io:8000/reddit', function (data) {
+            $('#reddit-loading').removeClass('hidden');
+            $.get('http://localhost:8000/reddit', function (data) {
                 let redditTabsHtml = '';
                 for (const subreddit in data) {
                     redditTabsHtml += `
@@ -242,6 +252,7 @@
 
                 // Add click event listeners for subreddit tabs
                 $('.reddit-tab').on('click', function () {
+                    $('#reddit-loading').removeClass('hidden');
                     $('.reddit-tab').removeClass('bg-blue-500 text-white').addClass('text-blue-500 hover:bg-gray-200');
                     $(this).removeClass('text-blue-500 hover:bg-gray-200').addClass('bg-blue-500 text-white');
 
@@ -256,6 +267,7 @@
 
         // Load data when the page loads
         $(document).ready(function () {
+            $('#reddit-loading').removeClass('hidden');
             loadSports();
             loadNews();
             loadRedditTabs();  // Load subreddit tabs and posts
@@ -272,6 +284,12 @@
 
         $('#refresh-reddit').on('click', function () {
             loadRedditPosts(selectedSubreddit);
+        });
+        
+        $('#search-news').on('keypress',function(e) {
+            if(e.which == 13) {
+                loadNews($(this).val());
+            }
         });
 
         // Tab functionality for sports section
