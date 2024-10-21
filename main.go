@@ -2,6 +2,8 @@ package main
 
 import (
 	"log"
+	"os"
+	"path/filepath"
 
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo"
@@ -9,9 +11,11 @@ import (
 )
 
 func main() {
-	err := godotenv.Load()
+	path_dir, err := os.Getwd()
+	_ = godotenv.Load(filepath.Join(path_dir, ".env"))
+
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Fatal()
 	}
 	e := echo.New()
 	e.Use(middleware.Logger())
@@ -26,5 +30,5 @@ func main() {
 
 	e.File("/", "public/index.html")
 
-	e.Logger.Fatal(e.Start(":8080"))
+	e.Logger.Fatal(e.Start(":8000"))
 }

@@ -47,7 +47,7 @@
     <!-- Main Header Section -->
     <header class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 p-6 shadow-lg text-center">
         <h1 class="text-white text-5xl font-extrabold uppercase tracking-widest">
-            ~AggeraTONATOR~
+            ~Aggernator~
         </h1>
         <p class="text-gray-400 text-lg mt-2 italic">Your ultimate platform for sports, news, and Reddit insights</p>
     </header>
@@ -151,7 +151,7 @@
 
         // Function to load sports data based on selected sport
         function loadSports() {
-            $.get(`http://localhost:8080/sports`, function (data) {
+            $.get(`http://127.0.0.1:8000/sports`, function (data) {
                 let sportsHtml = '';
                 data.forEach(game => {
                     sportsHtml += `
@@ -183,7 +183,7 @@
 
         // Function to load news data
         function loadNews() {
-            $.get('http://localhost:8080/news', function (data) {
+            $.get('http://127.0.0.1:8000/news', function (data) {
                 let newsHtml = '';
                 data.articles.forEach(article => {
                     newsHtml += `
@@ -204,7 +204,7 @@
             // Show loading spinner
             $('#reddit-loading').removeClass('hidden');
 
-            $.get('http://localhost:8080/reddit', function (data) {
+            $.get('http://127.0.0.1:8000/reddit', function (data) {
                 let redditHtml = '';
                 const posts = data[subreddit];
                 posts.forEach(post => {
@@ -230,7 +230,7 @@
 
         // Function to load reddit tabs (subreddit names)
         function loadRedditTabs() {
-            $.get('http://localhost:8080/reddit', function (data) {
+            $.get('http://127.0.0.1:8000/reddit', function (data) {
                 let redditTabsHtml = '';
                 for (const subreddit in data) {
                     redditTabsHtml += `
